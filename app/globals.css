@@ -3,23 +3,424 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 248, 250, 252;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 99, 102, 241;
+  --background-end-rgb: 168, 85, 247;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  --text-color: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.8);
+  --bg-blur-1: rgba(99, 102, 241, 0.3);
+  --bg-blur-2: rgba(168, 85, 247, 0.2);
 }
 
+.dark {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 17, 24, 39;
+  --background-end-rgb: 31, 41, 55;
+  --glass-bg: rgba(31, 41, 55, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --text-color: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --bg-blur-1: rgba(99, 102, 241, 0.2);
+  --bg-blur-2: rgba(168, 85, 247, 0.1);
+}
+
+.light {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 229, 231, 235;
+  --background-end-rgb: 209, 213, 219;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  --text-color: #1f2937;
+  --text-muted: rgba(0, 0, 0, 0.7);
+  --bg-blur-1: rgba(99, 102, 241, 0.1);
+  --bg-blur-2: rgba(168, 85, 247, 0.05);
+}
+
+/* Base styles */
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    135deg,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-attachment: fixed;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Container and layout */
+.container-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem;
+  position: relative;
+  overflow: auto;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  z-index: 10;
+  margin: 1rem 0;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Make sure the glass container takes full width but respects max-width */
+.glass {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* Improve form and input scaling */
+form {
+  width: 100%;
+}
+
+.input-glass {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Task items scaling */
+.task-item {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
+/* Form controls */
+.input-glass {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.input-glass:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.input-glass::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Buttons */
+button {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Header styles */
+header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+header h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+}
+
+/* Filter controls */
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem;
+  border-radius: 0.75rem;
+}
+
+.filter-tabs button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.filter-tabs button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.filter-tabs button.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .container-wrapper {
+    padding: 0.5rem;
+  }
+  
+  .content-wrapper {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+  }
+  
+  .glass {
+    padding: 1rem;
+  }
+  
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .filter-tabs {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .filter-tabs button {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem;
+  }
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 1.25rem;
+  width: 100%;
+  margin: 0;
+  padding: 2rem;
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Background elements */
+.bg-blur-1 {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #6366f1, #8b5cf6);
+  filter: blur(80px);
+  opacity: 0.3;
+  z-index: 1;
+  top: 10%;
+  left: 10%;
+  transform: translate(-50%, -50%);
+  animation: float 15s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.bg-blur-2 {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ec4899, #f43f5e);
+  filter: blur(100px);
+  opacity: 0.2;
+  z-index: 1;
+  bottom: 10%;
+  right: 10%;
+  transform: translate(50%, 50%);
+  animation: float 18s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+  }
+}
+
+/* Custom utilities */
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom button styles */
+.btn-primary {
+  @apply bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg;
+}
+
+.btn-secondary {
+  @apply bg-transparent border border-white border-opacity-30 hover:bg-white hover:bg-opacity-10 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95;
+}
+
+/* Input styles */
+.input-glass {
+  @apply bg-white bg-opacity-10 border border-white border-opacity-20 text-white placeholder-white placeholder-opacity-60 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 w-full transition-all duration-200;
+}
+
+/* Custom checkbox */
+.checkbox-custom {
+  @apply appearance-none w-6 h-6 rounded-full border-2 border-white border-opacity-30 bg-white bg-opacity-10 cursor-pointer transition-all duration-200 flex items-center justify-center;
+}
+
+.checkbox-custom:checked {
+  @apply bg-blue-500 border-blue-500 bg-opacity-100;
+}
+
+.checkbox-custom:checked::after {
+  content: '✓';
+  @apply text-white text-sm font-bold;
+}
+
+/* Task item hover effect */
+.task-item {
+  @apply transition-all duration-200 transform hover:scale-[1.02] hover:bg-opacity-30;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .glass {
+    border-radius: 0.75rem;
+  }
+  
+  .btn-primary, .btn-secondary {
+    @apply py-1.5 px-4 text-sm;
   }
 }
