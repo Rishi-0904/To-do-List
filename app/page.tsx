@@ -141,14 +141,13 @@ export default function Home() {
 
   const toggleTodo = (id: string) => {
     setTodos(
-      todos.map((todo) =>
+      todos.map((todo) => 
         todo.id === id 
           ? { ...todo, completed: !todo.completed, updatedAt: new Date() } 
           : todo
       )
     );
   };
-
   const deleteTodo = (id: string) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
@@ -204,12 +203,14 @@ export default function Home() {
                   whileTap={{ scale: 0.98 }}
                   className="p-6 rounded-full bg-white bg-opacity-30 hover:bg-opacity-40 transition-all shadow-2xl"
                   style={{
-                    width: '80px',
-                    height: '80px',
+                    '--width': '80px',
+                    '--height': '80px',
+                    width: 'var(--width)',
+                    height: 'var(--height)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'
-                  }}
+                  } as React.CSSProperties}
                   aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                 >
                   {darkMode ? (
