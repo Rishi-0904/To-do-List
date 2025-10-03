@@ -12,26 +12,15 @@ Persistent storage with database
 
 Responsive and user-friendly interface
 
-(Optional) Authentication using Google OAuth
+Authentication using Google OAuth
 
 🛠 Tech Stack
 
-Frontend: React
+Frontend: React,Typescript,Tailwind
 
 Backend: Node.js, Express.js
 
-Database: MongoDB
-
-Authentication: Google OAuth / JWT (if enabled)
-
-Deployment: Vercel / Netlify (Frontend), Heroku / Render (Backend)
-
-📂 Project Structure
-├── client/        # Frontend (React)
-├── server/        # Backend (Node.js + Express.js)
-├── models/        # MongoDB Schemas
-├── routes/        # Express Routes
-└── README.md
+Authentication: Google OAuth
 
 ⚙️ Installation & Setup
 
@@ -64,10 +53,6 @@ npm start
 # Run frontend
 cd client
 npm start
-
-📸 Screenshots (Optional)
-
-Add screenshots of your app UI here
 
 🔮 Future Enhancements
 
